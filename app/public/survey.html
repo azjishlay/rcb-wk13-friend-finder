@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <title>Friend Finder</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Bootstrap-Select CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+  <!-- Styles CSS -->
+  <style type="text/css">
+    body {
+      font-family: 'Open Sans', sans-serif;
+      text-transform: none;
+    }
+
+    label.question {
+      color: #767676;
+      font-weight: normal;
+    }
+
+    .custom {
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .number {
+      color: #62BBC1;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .form-group.required .control-label:after { 
+      content: " *";
+      color: red;
+    }
+
+    .site-footer {
+      position: relative;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      margin-top: 40px;
+      line-height: 1.5;
+      color: #767676;
+      border-top: 1px solid #eee;
+    }
+
+    .site-footer-links {
+      margin: 0;
+      list-style: none;
+    }
+  </style>
+
+  <!-- Bootstrap's JavaScript requires jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap-Select JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+</head>
+<body>
+
+  <!-- navbar -->
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand custom" href="#"><i class="glyphicon glyphicon-user"></i> Friend Finder</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/home">Home</a>
+        </li>
+        <li class="active">
+          <a href="/quiz">Quiz</a>
+        </li>
+        <li>
+          <a href="/api/friends">API Friends Data</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- /navbar -->
+
+  <div class="row clearfix"></div>
+
+  <div class="container">
+
+    <form role="form">
+
+      <h3>Take the quiz!</h3>
+
+      <p class="lead page-header">Basic Information</p>
+
+      <div class="form-group required">
+        <label for="friendName" class="control-label">Name</label>
+        <input type="text" required="required" class="form-control" id="friendName" name="friendName" placeholder="">
+      </div>
+
+      <div class="form-group required">
+        <label for="friendPhoto" class="control-label">Link to Photo</label>
+        <input type="url" required="required" class="form-control" id="friendPhoto" name="friendPhoto" placeholder="">
+      </div>
+
+      <p class="lead page-header">Personality Questions</p>
+
+      <div class="form-group">
+        <label for="q1" class="control-label question"><span class="number">Question 1:</span> Your mind is always buzzing with unexplored ideas and plans.</label>
+        <div class="">
+          <select id="q1" class="selectpicker" title="Select answer">
+            <option data-subtext="Strongly Disagree">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option data-subtext="Strongly Agree">5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="q1" class="control-label question"><span class="number">Question 1:</span> Your mind is always buzzing with unexplored ideas and plans.</label>
+        <div class="">
+          <select id="q1" class="selectpicker" title="Select answer">
+            <option data-subtext="Strongly Disagree">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option data-subtext="Strongly Agree">5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="q1" class="control-label question"><span class="number">Question 1:</span> Your mind is always buzzing with unexplored ideas and plans.</label>
+        <div class="">
+          <select id="q1" class="selectpicker" title="Select answer">
+            <option data-subtext="Strongly Disagree">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option data-subtext="Strongly Agree">5</option>
+          </select>
+        </div>
+      </div>
+
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-default">Clear</button>
+
+    </form>
+  </div>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="site-footer">
+
+        <p><i class="fa fa-code" aria-hidden="true"></i> <a href="https://github.com/lijasminej">lijasminej</a> | <i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/lijasminej/week-13-friend-finder">Github Repo</a></p>
+      
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
