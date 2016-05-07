@@ -55,7 +55,7 @@
       border-color: #3d949a;
     }
 
-    .btn-primary:active, .btn-primary:hover {
+    .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary.focus {
       background-color: #3d949a;
       border-color: #3d949a;
     }
@@ -92,23 +92,26 @@
 </head>
 <body>
 
+
   <!-- modal -->
-  <div class="modal fade" id="results" tabindex="-1" role="dialog" aria-labelledby="Results">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" tabindex="-1" role="dialog" id="match">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Results</h4>
+          <h4 class="modal-title">Thank You</h4>
         </div>
-        <div class="modal-body">
-          <!-- friend results -->
+        <div class="modal-body text-center" id="match-result">
+
+          <!-- Show results here -->
+
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary custom large" data-dismiss="modal">Close</button>
         </div>
-      </div>
-    </div>
-  </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
   <!-- /modal -->
 
   <!-- navbar -->
@@ -158,7 +161,7 @@
         <input type="url" required="required" class="form-control" id="friendPhoto" name="friendPhoto" placeholder="">
       </div>
 
-      <p class="lead page-header">Personality Questions</p>
+      <p class="lead page-header">Survey Questions</p>
 
       <!-- quiz -->
       <div class="quiz-content">
@@ -238,44 +241,97 @@
           qnumber++;
         };
 
-        console.log(qnumber);
+        console.log((qnumber-1) + " questions displaying!");
 
       // On submit, add data to friends list
         $('#submit').on('click', function(){
 
+          // TODO
           // Validate form ???
 
           // Create new object with data
-
           var newFriend = {
             name: $('#friendName').val().trim(),
             photo: $('#friendPhoto').val().trim(),
             answers: []
           };
 
-          for (var i = 1; i < qnumber; i++) {
-            newFriend.answers.push(Number($('#q' + i).find('button').prop('title')));
-          };
+          // Create array to find friend
+          var totalDifference = [];
 
-          console.log(newFriend);
-
+          
           // Get location of root page
-          // URL will change when page is deployed
           var currentURL = window.location.origin;
 
-          $.post(currentURL + '/api/friends', newFriend, function(data){
+          // Get existing array of data to compare answers
+          $.get(currentURL + '/api/friends', function(friendsArray, err, next){
 
-            // Modal popup
-            // $('#results').modal('show');
+            // if (err) throw err; 
+            if (friendsArray !== undefined) {
+
+              // Loop through each question 
+              for (var i = 1; i < qnumber; i++) {
+                // Push new friend's answer to array
+                newFriend.answers.push(Number($('#q' + i).find('button').prop('title')));
+              };
+
+              var newFriendSum = 0;
+              $.each(newFriend.answers,function() {
+                  newFriendSum += parseFloat(this);
+              });
+            
+                // Loop through existing friends
+                for (var j = 0; j < friendsArray.length; j++) {
+
+                  var exisitingFriendSum = 0;
+                  $.each(friendsArray[j].answers,function(){
+                    exisitingFriendSum += parseFloat(this);
+                  });
+
+                  totalDifference.push(Math.abs(exisitingFriendSum - newFriendSum));
+
+                };
+
+              // Get least difference using function to get the Min value in Array
+              Array.min = function( array ){
+                return Math.min.apply( Math, array );
+              };
+              
+              // TODO
+              // What if same difference?
+              // Need to change this so it creates object that assigns difference to a specific friend
+              var friendMatch = friendsArray[totalDifference.indexOf(Array.min(totalDifference))];
+
+              // TODO 
+              // Format this better
+
+              var matchText = $('<h3>');
+              matchText.text(friendMatch.name);
+
+              var matchImg = $('<img>');
+              matchImg.attr('src',friendMatch.photo).width(300).height(300);
+
+              $('#match-result').append(matchText).append(matchImg);
+
+              // SHOW THE MATCH!
+              $('#match').modal('show');
+            };
+            
+            // console.log(err);
+            // next();
+          });
+
+          $.post(currentURL + '/api/friends', newFriend, function(data){
 
             // Clear form values when submitting
             $('#friendName').val("");
             $('#friendPhoto').val("");
 
           });
-
+          
           return false;
         });
+
 
     });
   </script>
