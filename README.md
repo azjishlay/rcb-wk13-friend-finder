@@ -1,12 +1,12 @@
 # rcb-wk13-friend-finder
 
- **Friend Finder** is a dating application that returns compatible matches. Users who complete and submit the quiz will have their answers compared to those of previous users, and thereafter, their information will be added to the database.
+ **Friend Finder** is a dating application that returns compatible matches. Users who complete and submit the quiz will have their answers compared to those of previous users; thereafter, their information will be added to the data.
 
 ### File Directory
 
 ```
 .
-+-- app
++-- _app
 |   +-- _data
 |   |   +-- friends.js
 |   +-- _public
