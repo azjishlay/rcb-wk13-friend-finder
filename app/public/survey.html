@@ -223,7 +223,7 @@
         var qnumber = 1;
         for (var question in questions) {
 
-          var div = $('<div></div>').addClass('form-group').attr('id','q' + qnumber);
+          var div = $('<div></div>').addClass('form-group');
 
           $(div).html('\
             <label class="control-label question">\
@@ -235,6 +235,9 @@
                 <option>4</option>\
                 <option data-subtext="Strongly Agree">5</option>\
               </select></div>');
+
+          // Give each question unique ID
+          $(div).find('.selectpicker').attr('id','q' + qnumber);
 
           $('.quiz-content').append(div);
 
@@ -249,16 +252,20 @@
           // TODO
           // Validate form ???
 
-          // Create new object with data
+          // Create new object to store data
           var newFriend = {
             name: $('#friendName').val().trim(),
             photo: $('#friendPhoto').val().trim(),
             answers: []
           };
 
-          // Create array to find friend
-          var totalDifference = [];
+          // Loop through each question to push new friend's answer to array
+          for (var i = 1; i < qnumber; i++) {
+            newFriend.answers.push(Number($('#q' + i).selectpicker('val')));
+          };
 
+          // Create array to find friend match
+          var totalDifference = [];
           
           // Get location of root page
           var currentURL = window.location.origin;
@@ -266,41 +273,34 @@
           // Get existing array of data to compare answers
           $.get(currentURL + '/api/friends', function(friendsArray, err, next){
 
-            // if (err) throw err; 
+            // If (err) throw err;
             if (friendsArray !== undefined) {
-
-              // Loop through each question 
-              for (var i = 1; i < qnumber; i++) {
-                // Push new friend's answer to array
-                newFriend.answers.push(Number($('#q' + i).find('button').prop('title')));
-              };
 
               var newFriendSum = 0;
               $.each(newFriend.answers,function() {
                   newFriendSum += parseFloat(this);
               });
             
-                // Loop through existing friends
-                for (var j = 0; j < friendsArray.length; j++) {
-
-                  var exisitingFriendSum = 0;
-                  $.each(friendsArray[j].answers,function(){
-                    exisitingFriendSum += parseFloat(this);
-                  });
-
-                  totalDifference.push(Math.abs(exisitingFriendSum - newFriendSum));
-
-                };
+              // Loop through existing friends
+              for (var j = 0; j < friendsArray.length; j++) {
+                var exisitingFriendSum = 0;
+                $.each(friendsArray[j].answers,function(){
+                  exisitingFriendSum += parseFloat(this);
+                });
+                totalDifference.push(Math.abs(exisitingFriendSum - newFriendSum));
+              };
 
               // Get least difference using function to get the Min value in Array
-              Array.min = function( array ){
-                return Math.min.apply( Math, array );
+              Array.min = function(array){
+                return Math.min.apply(Math,array);
               };
-              
+
+              var friendMatch = friendsArray[totalDifference.indexOf(Array.min(totalDifference))];
+
               // TODO
               // What if same difference?
               // Need to change this so it creates object that assigns difference to a specific friend
-              var friendMatch = friendsArray[totalDifference.indexOf(Array.min(totalDifference))];
+
 
               // TODO 
               // Format this better
@@ -315,6 +315,8 @@
 
               // SHOW THE MATCH!
               $('#match').modal('show');
+
+
             };
             
             // console.log(err);
@@ -322,16 +324,20 @@
           });
 
           $.post(currentURL + '/api/friends', newFriend, function(data){
-
-            // Clear form values when submitting
-            $('#friendName').val("");
-            $('#friendPhoto').val("");
-
+            console.log('New friend data submitted!');
           });
-          
+
+
+
           return false;
         });
 
+      // On modal close, reset form
+        $('#match').on('hidden.bs.modal', function () {
+          $('#friendName').val('');
+          $('#friendPhoto').val('');
+          $('.selectpicker').selectpicker('val','');
+      });
 
     });
   </script>
